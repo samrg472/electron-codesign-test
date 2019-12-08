@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos
     env:
       CSC_LINK: "./ci/codesign-cert.p12"
       CSC_KEY_PASSWORD: ${{ secrets.CERT_PASSWORD }}
