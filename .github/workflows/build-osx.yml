@@ -23,7 +23,7 @@ jobs:
 
       - name: Import code signing certificate
         run: |
-          sudo security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD_TEST }}" -k "/Library/Keychains/System.keychain"
+          sudo security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD }}" -k "/Library/Keychains/System.keychain" -T /usr/bin/codesign
           sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" ./ci/codesign-cert.cer
           security find-identity -v
       - run: yarn install --frozen-lockfile
