@@ -1,0 +1,25 @@
+name: Build Artifacts
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --frozen-lockfile
+      - name: Build artifacts
+        run: yarn electron:build
+  build:
+    runs-on: windows
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --frozen-lockfile
+      - name: Build artifacts
+        run: yarn electron:build

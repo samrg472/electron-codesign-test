@@ -1,6 +1,9 @@
-name: Build MacOS
+name: Publish Artifacts
 
-on: [push]
+on:
+  push:
+    branches:
+      - refs/tags/*
 
 jobs:
   build:
@@ -10,17 +13,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: Import code signing certificate
         run: |
           sudo security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD }}" -k "/Library/Keychains/System.keychain" -T /usr/bin/codesign
@@ -28,4 +20,14 @@ jobs:
           security find-identity -v
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
-        run: yarn electron:build
+        run: yarn electron:build --publish always
+  build:
+    runs-on: windows
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --frozen-lockfile
+      - name: Build artifacts
+        run: yarn electron:build --publish always
