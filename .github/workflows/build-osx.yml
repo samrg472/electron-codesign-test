@@ -23,6 +23,6 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - run: |
-          export CSC_LINK="./ci/codesign-cert.p12"
-          export CSC_KEY_PASSWORD="${{ secrets.CERT_PASSWORD_TEST }}"
+          CSC_LINK="./ci/codesign-cert.p12"
+          CSC_KEY_PASSWORD="${{ secrets.CERT_PASSWORD }}"
           yarn electron:build
