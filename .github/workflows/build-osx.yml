@@ -23,11 +23,9 @@ jobs:
 
       - name: Import code signing certificate
         run: |
-          echo "$HOME"
-          security create-keychain -p "${{ secrets.CERT_PASSWORD_TEST }}" "$HOME/build.keychain"
-          security unlock-keychain -p "${{ secrets.CERT_PASSWORD_TEST }}" "$HOME/build.keychain"
-          security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD_TEST }}" -k "$HOME/build.keychain"
-          security find-identity -v -k "$HOME/build.keychain"
+          security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD_TEST }}"
+          security import ./ci/codesign-cert.cer
+          security find-identity -v
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
         run: |
