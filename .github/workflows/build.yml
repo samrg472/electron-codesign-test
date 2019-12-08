@@ -1,6 +1,9 @@
 name: Build Artifacts
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - refs/tags/*
 
 jobs:
   mac:
