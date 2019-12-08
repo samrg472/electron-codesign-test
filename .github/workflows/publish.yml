@@ -20,7 +20,9 @@ jobs:
           security find-identity -v
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
-        run: yarn electron:build --publish always
+        run: |
+          GH_TOKEN="${{ secrets.GH_TOKEN }}"
+          yarn electron:build --publish always
   win:
     runs-on: windows-latest
     steps:
@@ -30,4 +32,6 @@ jobs:
           node-version: 12
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
-        run: yarn electron:build --publish always
+        run: |
+          GH_TOKEN="${{ secrets.GH_TOKEN }}"
+          yarn electron:build --publish always
