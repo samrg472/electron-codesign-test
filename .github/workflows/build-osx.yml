@@ -23,7 +23,7 @@ jobs:
 
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
-        run: |
+        run: >
           CSC_LINK="./ci/codesign-cert.p12"
           CSC_KEY_PASSWORD="${{ secrets.CERT_PASSWORD }}"
           yarn electron:build
