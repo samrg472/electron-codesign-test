@@ -5,6 +5,10 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+import bufferUtil from 'bufferutil';
+import { Buffer } from 'buffer';
+import crypto from 'crypto';
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -71,6 +75,54 @@ app.on('ready', async () => {
 
   }
   createWindow()
+
+  try {
+    {
+      const origSource = crypto.randomBytes(10);
+      const source = Buffer.from(origSource);
+      const mask = crypto.randomBytes(4);
+
+      bufferUtil.mask(source, mask, source, 0, source.length);
+
+      if (Buffer.compare(origSource, source) === 0) throw new Error('buffer util test failed (mask)');
+      bufferUtil.unmask(source, mask);
+      if (Buffer.compare(origSource, source) !== 0) throw new Error('bufferutil test failed (unmask)');
+    }
+
+    {
+      const isValidUTF8 = require('utf-8-validate');
+      const buf = Buffer.from([0xf0, 0x90, 0x80, 0x80]);
+      if (!isValidUTF8(buf)) throw new Error('utf-8-validate test failed');
+    }
+
+    await new Promise((resolve, reject) => {
+      const sqlite3 = require('sqlite3').verbose();
+      const db = new sqlite3.Database(':memory:');
+
+      db.serialize(function() {
+        db.run("CREATE TABLE dummy (id INTEGER PRIMARY KEY)");
+
+        const stmt = db.prepare("INSERT INTO dummy VALUES (?)");
+        for (let i = 0; i < 10; i++) {
+            stmt.run(i);
+        }
+        stmt.finalize();
+
+        let expectedNum = 0;
+        db.each("SELECT id FROM dummy ORDER BY id ASC", function(err, row) {
+          if (err) throw new Error(err);
+          if (row.id !== expectedNum++) reject(new Error('sqlite test failed (row retrieval)'));
+          if (expectedNum === 10) resolve();
+        });
+      });
+
+      db.close();
+    });
+
+    console.log('bufferutil, utf-8-validate, and sqlite tests passed');
+  } catch (e) {
+    console.log('native node module tests failed:', e);
+  }
 })
 
 // Exit cleanly on request from parent process in development mode.
