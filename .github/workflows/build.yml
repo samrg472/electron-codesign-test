@@ -3,7 +3,7 @@ name: Build Artifacts
 on: [push]
 
 jobs:
-  build:
+  mac:
     runs-on: macos
     steps:
       - uses: actions/checkout@v1
@@ -13,7 +13,7 @@ jobs:
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
         run: yarn electron:build
-  build:
+  win:
     runs-on: windows
     steps:
       - uses: actions/checkout@v1
