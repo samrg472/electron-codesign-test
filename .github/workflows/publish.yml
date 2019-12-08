@@ -2,8 +2,8 @@ name: Publish Artifacts
 
 on:
   push:
-    branches:
-      - 'refs/tags/**'
+    tags:
+      - '*'
 
 jobs:
   mac:

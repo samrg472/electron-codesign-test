@@ -2,8 +2,8 @@ name: Build Artifacts
 
 on:
   push:
-    branches-ignore:
-      - 'refs/tags/**'
+    tags-ignore:
+      - '*'
 
 jobs:
   mac:
