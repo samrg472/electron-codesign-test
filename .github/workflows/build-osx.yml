@@ -28,6 +28,4 @@ jobs:
           security find-identity -v
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
-        run: |
-          export CSC_KEYCHAIN="$HOME/build.keychain"
-          yarn electron:build
+        run: yarn electron:build
