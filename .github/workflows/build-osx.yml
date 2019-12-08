@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CSC_LINK: "./ci/codesign-cert.p12"
-      CSC_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+      CSC_KEY_PASSWORD: ${{ secrets.CERT_PASSWORD }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
