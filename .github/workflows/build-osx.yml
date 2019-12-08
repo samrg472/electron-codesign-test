@@ -26,4 +26,5 @@ jobs:
         run: |
           export CSC_LINK="${GITHUB_WORKSPACE}/ci/codesign-cert.p12"
           export CSC_KEY_PASSWORD="${{ secrets.CERT_PASSWORD_TEST }}"
+          export CSC_IDENTITY_AUTO_DISCOVERY=false
           yarn electron:build
