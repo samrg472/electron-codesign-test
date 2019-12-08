@@ -7,7 +7,7 @@ on:
 
 jobs:
   mac:
-    runs-on: macos
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -22,7 +22,7 @@ jobs:
       - name: Build artifacts
         run: yarn electron:build --publish always
   win:
-    runs-on: windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
