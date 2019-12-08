@@ -5,9 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: macos
-    env:
-      CSC_LINK: "./ci/codesign-cert.p12"
-      CSC_KEY_PASSWORD: ${{ secrets.CERT_PASSWORD }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -25,4 +22,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: yarn install --frozen-lockfile
-      - run: yarn electron:build
+      - run: |
+          export CSC_LINK="./ci/codesign-cert.p12"
+          export CSC_KEY_PASSWORD="fake_password_test"
+          yarn electron:build
