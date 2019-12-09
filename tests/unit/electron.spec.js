@@ -7,7 +7,7 @@ let spectron;
 beforeAll(async () => {
   spectron = await testWithSpectron({
     spectronOptions: {
-      chromeDriverArgs: ['--disable-dev-shm-usage']
+      chromeDriverArgs: ['--disable-dev-shm-usage', '--no-sandbox']
     }
   });
 });
