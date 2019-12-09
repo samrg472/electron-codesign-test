@@ -2,30 +2,31 @@ import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
 
 jest.setTimeout(50000);
 
-let app;
-let stopServe;
+let spectron;
 
 beforeAll(async () => {
-  const spectron = await testWithSpectron();
-  app = spectron.app;
-  stopServe = spectron.stopServe;
-  console.log('STOP SERVE:', stopServe);
+  spectron = await testWithSpectron({
+    spectronOptions: {
+      chromeDriverArgs: ['--disable-dev-shm-usage']
+    }
+  });
 });
 
 afterAll(async () => {
-  console.log('STOP SERVE:', stopServe);
-  if (stopServe) {
-    await stopServe();
+  if (spectron) {
+    await spectron.stopServe();
   }
 });
 
 beforeEach(async () => {
-  await app.restart();
+  if (spectron) {
+    await spectron.app.restart();
+  }
 });
 
 test('Window Loads Properly', async () => {
-  const win = app.browserWindow;
-  const client = app.client;
+  const win = spectron.app.browserWindow;
+  const client = spectron.app.client;
 
   // Window was created
   expect(await client.getWindowCount()).toBe(1);
