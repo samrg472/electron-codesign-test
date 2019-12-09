@@ -9,9 +9,11 @@ beforeAll(async () => {
   const spectron = await testWithSpectron();
   app = spectron.app;
   stopServe = spectron.stopServe;
+  console.log('STOP SERVE:', stopServe);
 });
 
 afterAll(async () => {
+  console.log('STOP SERVE:', stopServe);
   await stopServe();
 });
 
