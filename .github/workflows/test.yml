@@ -20,4 +20,4 @@ jobs:
           node-version: 12
       - run: yarn install --frozen-lockfile
       # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
-      - run: npm run test:unit -- -run-in-band
+      - run: npm run test:unit -- --run-in-band
