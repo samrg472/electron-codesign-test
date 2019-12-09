@@ -3,27 +3,21 @@ name: Run Tests
 on:
   push:
     branches:
-      - '*'
+      - '**'
     tags-ignore:
-      - '*'
+      - '**'
 
 jobs:
-  mac:
-    runs-on: macos-latest
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, mac-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: 12
       - run: yarn install --frozen-lockfile
-      - run: yarn run test:unit
-  win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: yarn install --frozen-lockfile
-      # Use npm since yarn causes an open handle to hang instead of correctly quitting
+      # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
       - run: npm run test:unit
