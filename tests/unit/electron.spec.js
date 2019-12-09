@@ -1,4 +1,5 @@
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
+import path from 'path';
 
 jest.setTimeout(50000);
 
@@ -7,7 +8,9 @@ let spectron;
 beforeAll(async () => {
   spectron = await testWithSpectron({
     spectronOptions: {
-      chromeDriverArgs: ['--disable-dev-shm-usage', '--no-sandbox']
+      chromeDriverArgs: ['--disable-dev-shm-usage', '--no-sandbox'],
+      chromeDriverLogPath: path.join(__dirname, 'chromeDriver.log'),
+      webdriverLogPath: path.join(__dirname, 'webdriver.log'),
     }
   });
 });
