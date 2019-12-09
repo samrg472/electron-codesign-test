@@ -1,4 +1,4 @@
-name: Build Artifacts
+name: Run Tests
 
 on:
   push:
@@ -25,4 +25,5 @@ jobs:
         with:
           node-version: 12
       - run: yarn install --frozen-lockfile
-      - run: yarn run test:unit --detect-open-handles
+      # Use npm since yarn causes an open handle to hang instead of correctly quitting
+      - run: npm run test:unit
