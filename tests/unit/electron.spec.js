@@ -14,7 +14,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
   console.log('STOP SERVE:', stopServe);
-  await stopServe();
+  if (stopServe) {
+    await stopServe();
+  }
 });
 
 beforeEach(async () => {
