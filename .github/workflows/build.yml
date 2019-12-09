@@ -25,4 +25,4 @@ jobs:
         with:
           node-version: 12
       - run: yarn install --frozen-lockfile
-      - run: yarn run test:unit
+      - run: yarn run test:unit --detect-open-handles
