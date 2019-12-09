@@ -16,15 +16,13 @@ jobs:
         with:
           node-version: 12
       - run: yarn install --frozen-lockfile
-      - name: Build artifacts
-        run: yarn electron:build
-  win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: yarn install --frozen-lockfile
-      - name: Build artifacts
-        run: yarn electron:build
+      - run: yarn run test:unit
+  # win:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12
+  #     - run: yarn install --frozen-lockfile
+  #     - run: yarn run test:unit
