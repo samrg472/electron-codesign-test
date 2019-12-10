@@ -6,8 +6,11 @@ on:
       - '**'
 
 jobs:
-  mac:
-    runs-on: macos-latest
+  publish:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -15,21 +18,13 @@ jobs:
           node-version: 12
       - name: Import code signing certificate
         run: |
-          sudo security import ./ci/codesign-cert.p12 -P "${{ secrets.CERT_PASSWORD }}" -k "/Library/Keychains/System.keychain" -T /usr/bin/codesign
+          sudo security import ./ci/codesign-cert.p12 \
+            -P "${{ secrets.CERT_PASSWORD }}" \
+            -k "/Library/Keychains/System.keychain" \
+            -T /usr/bin/codesign
           sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" ./ci/codesign-cert.cer
           security find-identity -v
-      - run: yarn install --frozen-lockfile
-      - name: Build artifacts
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn electron:build --publish always
-  win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
+        if: matrix.os == 'macos-latest'
       - run: yarn install --frozen-lockfile
       - name: Build artifacts
         env:
