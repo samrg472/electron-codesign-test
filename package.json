@@ -12,6 +12,9 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "main": "background.js",
+  "resolutions": {
+    "vue-cli-plugin-electron-builder/spectron": "^8.0.0"
+  },
   "dependencies": {
     "bufferutil": "^4.0.1",
     "core-js": "^3.4.8",
