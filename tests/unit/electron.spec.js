@@ -8,7 +8,7 @@ let spectron;
 beforeAll(async () => {
   spectron = await testWithSpectron({
     spectronOptions: {
-      chromeDriverArgs: ['--disable-dev-shm-usage', '--no-sandbox'],
+      chromeDriverArgs: ['--disable-dev-shm-usage', '--no-sandbox', '--remote-debugging-port=9222'],
       chromeDriverLogPath: path.join(__dirname, 'chromeDriver.log'),
       webdriverLogPath: path.join(__dirname, 'webdriver.log'),
     }
