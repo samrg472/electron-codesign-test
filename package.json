@@ -1,6 +1,6 @@
 {
   "name": "electron-codesign-test",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "repository": "https://github.com/samrg472/electron-codesign-test.git",
   "scripts": {
