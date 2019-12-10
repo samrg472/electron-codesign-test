@@ -8,28 +8,20 @@ on:
       - '**'
 
 jobs:
-  'test (ubuntu-latest)':
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: Xvfb :99 -screen 0 1024x768x24 &
-      - run: yarn install --frozen-lockfile
-      - run: yarn run test:unit
-        env:
-          DISPLAY: ':99'
   test:
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - run: Xvfb :99 -screen 0 1024x768x24 &
+        if: matrix.os == 'ubuntu-latest'
       - run: yarn install --frozen-lockfile
       # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
       - run: npm run test:unit -- --run-in-band --force-exit
+        env:
+          DISPLAY: ':99'
