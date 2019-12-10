@@ -7,11 +7,13 @@
     </div>
     <div v-if="hasUpdate">
       <div>New updates are available!</div>
-      <button v-if="!updateReady" @click="downloadUpdate">Download update</button>
-      <button v-else @click="installUpdate">Install update</button>
+      <div v-if="downloadProgress === null">
+        <button v-if="!updateReady" @click="downloadUpdate">Download update</button>
+        <button v-else @click="installUpdate">Install update</button>
+      </div>
     </div>
     <div v-else>No new update available</div>
-    <div v-if="downloadProgress !== null">Progress: {{ downloadProgress }}</div>
+    <div v-if="downloadProgress !== null">Update download progress: {{ downloadProgress }}</div>
   </div>
 </template>
 
@@ -41,11 +43,12 @@ export default {
     });
 
     ipcRenderer.on('update-progress', (_, progress) => {
-      this.downloadProgress = progress;
+      this.downloadProgress = Math.floor(progress);
     });
 
     ipcRenderer.on('update-ready-for-install', () => {
       this.updateReady = true;
+      this.downloadProgress = null;
     });
   },
   methods: {
@@ -56,7 +59,9 @@ export default {
       ipcRenderer.send('download-update');
     },
     installUpdate() {
-      ipcRenderer.send('install-update');
+      if (this.updateReady) {
+        ipcRenderer.send('install-update');
+      }
     }
   }
 }

@@ -84,6 +84,7 @@ app.on('ready', async () => {
   });
 
   autoUpdater.on('update-downloaded', () => {
+    console.log('Update downloaded');
     win.webContents.send('update-ready-for-install');
   });
 
@@ -93,6 +94,13 @@ app.on('ready', async () => {
     } catch (e) {
       console.log('Error checking for updates:', e);
       sendVersionInfo(false, false);
+    }
+  });
+
+  ipcMain.on('download-update', async () => {
+    try {
+      await autoUpdater.downloadUpdate();
+    } catch {
     }
   });
 
