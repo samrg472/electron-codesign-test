@@ -18,7 +18,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: Xvfb :99 -screen 0 1024x768x24 &
+      - name: Setup a virtual framebuffer
+        run: Xvfb :99 -screen 0 1024x768x24 &
         if: matrix.os == 'ubuntu-latest'
       - run: yarn install --frozen-lockfile
       # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
