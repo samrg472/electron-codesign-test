@@ -1,13 +1,12 @@
 'use strict'
 
 import { app, protocol, BrowserWindow } from 'electron'
-import {
-  createProtocol,
-  installVueDevtools
-} from 'vue-cli-plugin-electron-builder/lib'
+import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import bufferUtil from 'bufferutil';
 import { Buffer } from 'buffer';
 import crypto from 'crypto';
+import {autoUpdater} from 'electron-updater';
+import { ipcMain } from 'electron';
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -39,43 +38,69 @@ function createWindow () {
   })
 }
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
   }
 })
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    // Devtools extensions are broken in Electron 6.0.0 and greater
-    // See https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/378 for more info
-    // Electron will not launch with Devtools extensions installed on Windows 10 with dark mode
-    // If you are not using Windows 10 dark mode, you may uncomment these lines
-    // In addition, if the linked issue is closed, you can upgrade electron and uncomment these lines
-    // try {
-    //   await installVueDevtools()
-    // } catch (e) {
-    //   console.error('Vue Devtools failed to install:', e.toString())
-    // }
+  createWindow();
 
+  function sendVersionInfo(checkingUpdate, hasUpdate) {
+    win.webContents.send('version-info', {
+      version: app.getVersion(),
+      checkingUpdate,
+      hasUpdate,
+    });
   }
-  createWindow()
 
+  win.webContents.on('did-finish-load', () => {
+    sendVersionInfo(false, false);
+  })
+
+  autoUpdater.autoDownload = false;
+  autoUpdater.on('checking-for-update', () => {
+    sendVersionInfo(true, false);
+  });
+
+  autoUpdater.on('update-available', info => {
+    console.log('Update available:', info);
+    sendVersionInfo(false, true);
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    sendVersionInfo(false, false);
+  });
+
+  autoUpdater.on('download-progress', info => {
+    win.webContents.send('update-progress', info.percent);
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    win.webContents.send('update-ready-for-install');
+  });
+
+  ipcMain.on('check-for-update', async () => {
+    try {
+      await autoUpdater.checkForUpdates();
+    } catch (e) {
+      console.log('Error checking for updates:', e);
+      sendVersionInfo(false, false);
+    }
+  });
+
+  ipcMain.on('install-update', () => {
+    autoUpdater.quitAndInstall();
+  });
+
+  // Run native tests
   try {
     {
       const origSource = crypto.randomBytes(10);
@@ -84,7 +109,7 @@ app.on('ready', async () => {
 
       bufferUtil.mask(source, mask, source, 0, source.length);
 
-      if (Buffer.compare(origSource, source) === 0) throw new Error('buffer util test failed (mask)');
+      if (Buffer.compare(origSource, source) === 0) throw new Error('bufferutil test failed (mask)');
       bufferUtil.unmask(source, mask);
       if (Buffer.compare(origSource, source) !== 0) throw new Error('bufferutil test failed (unmask)');
     }

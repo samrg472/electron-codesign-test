@@ -1,17 +1,63 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>Current version: {{version}}</div>
+    <div>
+      <div>Checking for update: {{ checkingUpdate }}</div>
+      <button @click="checkForUpdate">Check for updates</button>
+    </div>
+    <div v-if="hasUpdate">
+      <div>New updates are available!</div>
+      <button v-if="!updateReady" @click="downloadUpdate">Download update</button>
+      <button v-else @click="installUpdate">Install update</button>
+    </div>
+    <div v-else>No new update available</div>
+    <div v-if="downloadProgress !== null">Progress: {{ downloadProgress }}</div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { ipcRenderer } from 'electron';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  components: {},
+  data: function() {
+    return {
+      version: '',
+      checkingUpdate: false,
+      hasUpdate: false,
+      newVersion: '',
+      downloadProgress: null,
+      updateReady: false,
+    };
+  },
+  mounted: function() {
+    console.log('App mounted');
+
+    ipcRenderer.on('version-info', (_, versionInfo) => {
+      this.version = versionInfo.version;
+      this.checkingUpdate = versionInfo.checkingUpdate;
+      this.hasUpdate = versionInfo.hasUpdate;
+    });
+
+    ipcRenderer.on('update-progress', (_, progress) => {
+      this.downloadProgress = progress;
+    });
+
+    ipcRenderer.on('update-ready-for-install', () => {
+      this.updateReady = true;
+    });
+  },
+  methods: {
+    checkForUpdate() {
+      ipcRenderer.send('check-for-update');
+    },
+    downloadUpdate() {
+      ipcRenderer.send('download-update');
+    },
+    installUpdate() {
+      ipcRenderer.send('install-update');
+    }
   }
 }
 </script>
