@@ -20,7 +20,7 @@ jobs:
       # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
       - run: npm run test:unit
         env:
-          DISPLAY: ':99.0'
+          DISPLAY: ':99'
       - run: find -type f -regex '.*/tests/.*\.log' -exec echo '{}' \; -exec cat '{}' \; -exec printf '\n\n' \;
         if: failure()
   test:
