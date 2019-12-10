@@ -8,7 +8,7 @@ on:
       - '**'
 
 jobs:
-  linux-test:
+  'test (ubuntu-latest)':
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -17,12 +17,9 @@ jobs:
           node-version: 12
       - run: Xvfb :99 -screen 0 1024x768x24 &
       - run: yarn install --frozen-lockfile
-      # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
-      - run: npm run test:unit
+      - run: yarn run test:unit
         env:
           DISPLAY: ':99'
-      - run: find -type f -regex '.*/tests/.*\.log' -exec echo '{}' \; -exec cat '{}' \; -exec printf '\n\n' \;
-        if: failure()
   test:
     strategy:
       matrix:
