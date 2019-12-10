@@ -25,7 +25,7 @@ jobs:
       - run: yarn install --frozen-lockfile
       # Use npm since yarn causes an open handle to hang instead of correctly quitting on Windows
       - run: npm run test:unit -- --run-in-band --force-exit
-      - run: find -type f -regex '.*/tests/.*\.log' -exec cat '{}' \;
+      - run: find -type f -regex '.*/tests/.*\.log' -exec echo '{}' \; -exec cat '{}' \; -exec printf '\n\n' \;
         if: failure()
   test:
     strategy:
