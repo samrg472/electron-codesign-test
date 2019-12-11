@@ -88,6 +88,10 @@ app.on('ready', async () => {
     win.webContents.send('update-ready-for-install');
   });
 
+  autoUpdater.on('error', e => {
+    console.log('autoupdater error:', e);
+  });
+
   ipcMain.on('check-for-update', async () => {
     try {
       await autoUpdater.checkForUpdates();
