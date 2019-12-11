@@ -80,6 +80,7 @@ app.on('ready', async () => {
   });
 
   autoUpdater.on('download-progress', info => {
+    console.log('Download progress...', Math.floor(info.percent));
     win.webContents.send('update-progress', info.percent);
   });
 
@@ -103,6 +104,7 @@ app.on('ready', async () => {
 
   ipcMain.on('download-update', async () => {
     try {
+      win.webContents.send('update-progress', 0);
       await autoUpdater.downloadUpdate();
     } catch {
     }
