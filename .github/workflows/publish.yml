@@ -21,7 +21,7 @@ jobs:
           CERT_PUB: ${{ secrets.CERT_PUB_MAC }}
           CERT_PRIV: ${{ secrets.CERT_PRIV_MAC }}
         run: |
-          echo "$CERT" | base64 -D > "$HOME/pub.cer"
+          echo "$CERT_PUB" | base64 -D > "$HOME/pub.cer"
           echo "$CERT_PRIV" | base64 -D > "$HOME/key.p12"
           sudo security import "$HOME/key.p12" \
             -P "${{ secrets.CERT_PASSWORD }}" \
