@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "${{ secrets.CERT_PAIR_WIN }}" > "$HOME/tmp.b64"
           certutil -decode "$HOME/tmp.b64" "$HOME/pair.p12"
-          echo "::set-env name=CSC_LINK=$HOME/pair.p12"
+          echo "::set-env name=CSC_LINK::$HOME/pair.p12"
       - run: yarn install --frozen-lockfile
       - name: Build and publish artifacts
         env:
