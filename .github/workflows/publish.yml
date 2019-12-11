@@ -17,12 +17,17 @@ jobs:
         with:
           node-version: 12
       - name: Import code signing certificate
+        env:
+          CERT_PUB: ${{ secrets.CERT_PUB_MAC }}
+          CERT_PRIV: ${{ secrets.CERT_PRIV_MAC }}
         run: |
-          sudo security import ./ci/codesign-cert.p12 \
+          echo "$CERT" | base64 -D > "$HOME/cert"
+          echo "$CERT_PRIV" | base64 -D > "$HOME/key"
+          sudo security import "$HOME/key" \
             -P "${{ secrets.CERT_PASSWORD }}" \
             -k "/Library/Keychains/System.keychain" \
             -T /usr/bin/codesign
-          sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" ./ci/codesign-cert.cer
+          sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" "$HOME/cert"
           security find-identity -v
         if: matrix.os == 'macos-latest'
       - run: yarn install --frozen-lockfile
