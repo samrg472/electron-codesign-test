@@ -21,13 +21,13 @@ jobs:
           CERT_PUB: ${{ secrets.CERT_PUB_MAC }}
           CERT_PRIV: ${{ secrets.CERT_PRIV_MAC }}
         run: |
-          echo "$CERT" | base64 -D > "$HOME/cert"
-          echo "$CERT_PRIV" | base64 -D > "$HOME/key"
-          sudo security import "$HOME/key" \
+          echo "$CERT" | base64 -D > "$HOME/pub.cert"
+          echo "$CERT_PRIV" | base64 -D > "$HOME/key.p12"
+          sudo security import "$HOME/key.p12" \
             -P "${{ secrets.CERT_PASSWORD }}" \
             -k "/Library/Keychains/System.keychain" \
             -T /usr/bin/codesign
-          sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" "$HOME/cert"
+          sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" "$HOME/pub.cert"
           security find-identity -v
         if: matrix.os == 'macos-latest'
       - run: yarn install --frozen-lockfile
