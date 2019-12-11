@@ -36,7 +36,7 @@ jobs:
             echo "Unhandled platform: ${{ matrix.os }}"
             exit 1
           fi
-        if: ${{ matrix.os }} != 'ubuntu-latest'
+        if: matrix.os != 'ubuntu-latest'
       - run: yarn install --frozen-lockfile
       - name: Build and publish artifacts
         env:
