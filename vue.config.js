@@ -1,9 +1,5 @@
 const FORCE_CODE_SIGNING = process.env.FORCE_CODE_SIGNING !== 'false';
-if (FORCE_CODE_SIGNING) {
-  console.log('Code signing is enforced!');
-} else {
-  console.log('[WARN] Code signing is not forced, builds may not be signed');
-}
+console.log('Code signing forced:', FORCE_CODE_SIGNING);
 
 module.exports = {
   pluginOptions: {
