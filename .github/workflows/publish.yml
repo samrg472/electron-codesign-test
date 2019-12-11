@@ -17,12 +17,9 @@ jobs:
         with:
           node-version: 12
       - name: Import code signing certificate
-        env:
-          CERT_PUB: ${{ secrets.CERT_PUB_MAC }}
-          CERT_PRIV: ${{ secrets.CERT_PRIV_MAC }}
         run: |
-          echo "$CERT_PUB" | base64 -D > "$HOME/pub.cer"
-          echo "$CERT_PRIV" | base64 -D > "$HOME/key.p12"
+          echo "${{ secrets.CERT_PUB_MAC }}" | base64 -D > "$HOME/pub.cer"
+          echo "${{ secrets.CERT_PRIV_MAC }}" | base64 -D > "$HOME/key.p12"
           sudo security import "$HOME/key.p12" \
             -P "${{ secrets.CERT_PASSWORD }}" \
             -k "/Library/Keychains/System.keychain" \
