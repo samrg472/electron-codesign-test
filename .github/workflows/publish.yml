@@ -42,4 +42,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           CSC_KEY_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+        shell: bash
         run: yarn electron:build --publish always
