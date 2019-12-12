@@ -19,6 +19,7 @@
     "bufferutil": "^4.0.1",
     "core-js": "^3.4.8",
     "electron-updater": "^4.2.0",
+    "godcoin": "https://github.com/GODcoin/godcoin-js.git#c2ee805",
     "sqlite3": "^4.1.1",
     "utf-8-validate": "^5.0.2",
     "vue": "^2.6.10",
@@ -35,7 +36,6 @@
     "electron": "^6.1.6",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.0.1",
-    "godcoin": "https://github.com/GODcoin/godcoin-js.git#c2ee805",
     "vue-cli-plugin-electron-builder": "^2.0.0-alpha.0",
     "vue-template-compiler": "^2.6.10"
   },
