@@ -42,5 +42,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           CSC_KEY_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+        # Build in bash to prevent path oddities when building on Windows
         shell: bash
         run: yarn electron:build --publish always
