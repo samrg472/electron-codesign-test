@@ -20,7 +20,7 @@ jobs:
         shell: pwsh
         run: |
           $os = "${{ matrix.os }}"
-          if ($os == "macos-latest") {
+          if ($os -eq "macos-latest") {
             echo "${{ secrets.CERT_PUB_MAC }}" | base64 -D > "$HOME/pub.cer"
             echo "${{ secrets.CERT_PRIV_MAC }}" | base64 -D > "$HOME/key.p12"
             sudo security import "$HOME/key.p12" \
@@ -29,7 +29,7 @@ jobs:
               -T /usr/bin/codesign
             sudo security add-trusted-cert -d -k "/Library/Keychains/System.keychain" "$HOME/pub.cer"
             security find-identity -v
-          } elseif ($os == "windows-latest") {
+          } elseif ($os -eq "windows-latest") {
             echo "${{ secrets.CERT_PAIR_WIN }}" > "$HOME/tmp.b64"
             certutil -decode "$HOME/tmp.b64" "$HOME/pair.p12"
             echo "::set-env name=CSC_LINK::$HOME/pair.p12"
