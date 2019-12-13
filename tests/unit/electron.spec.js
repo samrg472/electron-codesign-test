@@ -1,19 +1,10 @@
 import { testWithSpectron } from 'vue-cli-plugin-electron-builder';
-import path from 'path';
-
-jest.setTimeout(50000);
 
 let spectron;
 
 beforeAll(async () => {
-  spectron = await testWithSpectron({
-    mode: 'development',
-    spectronOptions: {
-      chromeDriverLogPath: path.join(__dirname, 'chromedriver.log'),
-      webdriverLogPath: path.join(__dirname, 'webdriver.log')
-    }
-  });
-});
+  spectron = await testWithSpectron();
+}, 2 * 60 * 1000);
 
 afterAll(async () => {
   if (spectron) {
