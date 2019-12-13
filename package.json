@@ -12,9 +12,6 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "main": "background.js",
-  "resolutions": {
-    "vue-cli-plugin-electron-builder/spectron": "^8.0.0"
-  },
   "dependencies": {
     "core-js": "^3.5.0",
     "godcoin": "https://github.com/GODcoin/godcoin-js.git#85e29f6",
@@ -27,9 +24,7 @@
     "vue-router": "^3.0.3",
     "vuex": "^3.1.2",
     "vuex-class": "^0.3.2",
-    "ws": "^7.2.0",
-    "bufferutil": "^4.0.1",
-    "utf-8-validate": "^5.0.2",
+    "ws": "^7.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.1",
@@ -39,11 +34,15 @@
     "@vue/test-utils": "1.0.0-beta.30",
     "aws-sdk": "^2.585.0",
     "babel-eslint": "^10.0.3",
-    "electron": "^6.1.6",
+    "electron": "=7.1.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.0.1",
     "vue-cli-plugin-electron-builder": "^2.0.0-alpha.0",
     "vue-template-compiler": "^2.6.10"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
   },
   "eslintConfig": {
     "root": true,
