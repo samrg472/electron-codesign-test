@@ -16,7 +16,9 @@
     "vue-cli-plugin-electron-builder/spectron": "^8.0.0"
   },
   "dependencies": {
+    "bufferutil": "^4.0.1",
     "core-js": "^3.5.0",
+    "electron-updater": "^4.2.0",
     "godcoin": "https://github.com/GODcoin/godcoin-js.git#85e29f6",
     "sqlite3": "^4.1.1",
     "vue": "^2.6.10",
