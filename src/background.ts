@@ -5,7 +5,7 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import bufferUtil from 'bufferutil';
 import { Buffer } from 'buffer';
 import crypto from 'crypto';
-import {autoUpdater} from 'electron-updater';
+import {autoUpdater, CancellationToken} from 'electron-updater';
 import { ipcMain } from 'electron';
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -93,21 +93,31 @@ app.on('ready', async () => {
     console.log('autoupdater error:', e);
   });
 
+  let cancellationToken: CancellationToken | undefined;
+
   ipcMain.on('check-for-update', async () => {
     try {
+      if (cancellationToken) {
+        cancellationToken.cancel();
+        cancellationToken = undefined;
+        win.webContents.send('update-progress', null);
+      }
       await autoUpdater.checkForUpdates();
-    } catch (e) {
-      console.log('Error checking for updates:', e);
+    } catch {
       sendVersionInfo(false, false);
     }
   });
 
   ipcMain.on('download-update', async () => {
     try {
+      if (cancellationToken) {
+        cancellationToken.cancel();
+        cancellationToken = undefined;
+      }
       win.webContents.send('update-progress', 0);
-      await autoUpdater.downloadUpdate();
-    } catch {
-    }
+      cancellationToken = new CancellationToken();
+      await autoUpdater.downloadUpdate(cancellationToken);
+    } catch {}
   });
 
   ipcMain.on('install-update', () => {

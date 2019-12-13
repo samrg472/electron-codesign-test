@@ -43,7 +43,7 @@ export default {
     });
 
     ipcRenderer.on('update-progress', (_, progress) => {
-      this.downloadProgress = Math.floor(progress);
+      this.downloadProgress = progress !== null ? Math.floor(progress) : null;
     });
 
     ipcRenderer.on('update-ready-for-install', () => {
