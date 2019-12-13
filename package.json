@@ -20,7 +20,6 @@
     "godcoin": "https://github.com/GODcoin/godcoin-js.git#85e29f6",
     "sqlite3": "^4.1.1",
     "vue": "^2.6.10",
-    "vue-property-decorator": "^8.3.0",
     "vue-router": "^3.0.3",
     "ws": "^7.2.0"
   },
