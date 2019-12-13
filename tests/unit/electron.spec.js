@@ -7,6 +7,7 @@ let spectron;
 
 beforeAll(async () => {
   spectron = await testWithSpectron({
+    mode: 'development',
     spectronOptions: {
       chromeDriverLogPath: path.join(__dirname, 'chromedriver.log'),
       webdriverLogPath: path.join(__dirname, 'webdriver.log')
