@@ -6,7 +6,7 @@
       <button @click="checkForUpdate">Check for updates</button>
     </div>
     <div v-if="hasUpdate">
-      <div>New updates are available!</div>
+      <div>Update to version {{ hasUpdate }} is available!</div>
       <div v-if="downloadProgress === null">
         <button v-if="!updateReady" @click="downloadUpdate">Download update</button>
         <button v-else @click="installUpdate">Install update</button>
@@ -27,7 +27,7 @@ export default {
     return {
       version: '',
       checkingUpdate: false,
-      hasUpdate: false,
+      hasUpdate: null,
       newVersion: '',
       downloadProgress: null,
       updateReady: false,

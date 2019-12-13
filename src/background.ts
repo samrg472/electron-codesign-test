@@ -72,7 +72,7 @@ app.on('ready', async () => {
 
   autoUpdater.on('update-available', info => {
     console.log('Update available:', info);
-    sendVersionInfo(false, true);
+    sendVersionInfo(false, info.version);
   });
 
   autoUpdater.on('update-not-available', () => {
