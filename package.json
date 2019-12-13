@@ -18,8 +18,6 @@
   "dependencies": {
     "core-js": "^3.5.0",
     "godcoin": "https://github.com/GODcoin/godcoin-js.git#85e29f6",
-    "libsodium-wrappers": "^0.7.6",
-    "long": "^4.0.0",
     "sqlite3": "^4.1.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
